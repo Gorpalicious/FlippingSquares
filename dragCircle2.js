@@ -33,6 +33,7 @@ function dragEnd(e) {
 	active = false;
 }
 
+// note: can refactor this later!!!
 function drag(e) {
 	if (active) {
 		e.preventDefault();
@@ -40,10 +41,42 @@ function drag(e) {
 		currentX = e.clientX - initialX;
 		currentY = e.clientY - initialY;
 
-		xOffset = currentX;
-		yOffset = currentY;
+		if (currentX < 0 || currentX > 350) {
+			currentX = getClosestNumber(currentX, 0, 350);
 
-		setTranslate(currentX, currentY, dragItem);
+			xOffset = currentX;
+			yOffset = currentY;
+
+			setTranslate(currentX, currentY, dragItem);
+
+			dragEnd(e);
+		} else if (currentY < 0 || currentY > 350) {
+			currentY = getClosestNumber(currentY, 0, 350);
+
+			xOffset = currentX;
+			yOffset = currentY;
+
+			setTranslate(currentX, currentY, dragItem);
+
+			dragEnd(e);
+		} else {
+			xOffset = currentX;
+			yOffset = currentY;
+
+			setTranslate(currentX, currentY, dragItem);
+		}
+	}
+}
+
+// note: can refactor this later!!!
+function getClosestNumber(numToCompare, lowNumber, highNumber) {
+	let a = highNumber - numToCompare;
+	let b = numToCompare - lowNumber;
+	console.log(Math.max(highNumber, lowNumber));
+	if (Math.max(a, b) === a) {
+		return lowNumber;
+	} else {
+		return highNumber;
 	}
 }
 
@@ -51,9 +84,11 @@ function setTranslate(xPos, yPos, el) {
 	el.style.transform = 'translate3d(' + xPos + 'px, ' + yPos + 'px, 0)';
 }
 
-const squares = document.querySelectorAll('.squareFront');
+const squares = Array.from(document.querySelectorAll('.squareFront'));
 
-[...squares].forEach(squares => {
+// let squaresArray = Array.from(squares);
+
+squares.forEach(squares => {
 	squares.addEventListener('mouseall', FollowMouse);
 });
 
