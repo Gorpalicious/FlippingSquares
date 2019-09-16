@@ -38,11 +38,13 @@
 	background-size: 109px 109px, 109px 109px, 100% 6px, 109px 109px, 109px 109px;
 	background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
 }
+
 .squareContainer {
 	position: absolute;
 	width: 50px;
 	height: 50px;
 }
+
 .squareFront {
 	width: 50px;
 	height: 50px;
@@ -60,7 +62,7 @@
 	background-color: peachpuff;
 	transition: all 1s linear;
 	/* transform: skew(-15deg, -15deg); */
-	filter: drop-shadow(2px 2px 4px rgb(172, 172, 172));
+	filter: drop-shadow(2px 2px 4px #acacac);
 	position: absolute;
 	z-index: 1;
 }
@@ -78,25 +80,30 @@
 #dragCircle {
 	width: 50px;
 	height: 50px;
-	background-color: rgb(245, 230, 99);
+	background-color: #f5e663;
 	border: 5px solid rgba(136, 136, 136, 0.5);
 	border-radius: 50%;
 	touch-action: none;
 	user-select: none;
 	position: absolute;
 	/* top: 0px;
-	left: 0px; */
-	transform: translate3d(Calc(388px / 2), Calc(388px / 2), 0);
+  left: 0px; */
+	transform: translate3d(calc(388px / 2), calc(388px / 2), 0);
 }
+
 #dragCircle:active {
-	background-color: rgba(168, 218, 220, 1);
+	background-color: #a8dadc;
 }
+
 #dragCircle:hover {
 	cursor: pointer;
 	border: 5px solid rgba(136, 136, 136, 0.7);
 }
+
 /* 
 svg {
 	transform: translate(-15px, -15px);
 	position: absolute;
 } */
+
+/*# sourceMappingURL=index.css.map */
