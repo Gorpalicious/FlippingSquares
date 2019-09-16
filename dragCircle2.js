@@ -6,10 +6,12 @@ var currentX;
 var currentY;
 var initialX;
 var initialY;
-var xOffset = 0;
-var yOffset = 0;
 var itemWidth;
 var itemHeight;
+const upperPosBound = 388;
+const lowerPosBound = 0;
+var xOffset = upperPosBound / 2;
+var yOffset = upperPosBound / 2;
 
 console.log(dragItem.getAttribute(width));
 
@@ -41,8 +43,8 @@ function drag(e) {
 		currentX = e.clientX - initialX;
 		currentY = e.clientY - initialY;
 
-		if (currentX < 0 || currentX > 350) {
-			currentX = getClosestNumber(currentX, 0, 350);
+		if (currentX < lowerPosBound || currentX > upperPosBound) {
+			currentX = getClosestNumber(currentX, lowerPosBound, upperPosBound);
 
 			xOffset = currentX;
 			yOffset = currentY;
@@ -50,8 +52,8 @@ function drag(e) {
 			setTranslate(currentX, currentY, dragItem);
 
 			dragEnd(e);
-		} else if (currentY < 0 || currentY > 350) {
-			currentY = getClosestNumber(currentY, 0, 350);
+		} else if (currentY < lowerPosBound || currentY > upperPosBound) {
+			currentY = getClosestNumber(currentY, lowerPosBound, upperPosBound);
 
 			xOffset = currentX;
 			yOffset = currentY;

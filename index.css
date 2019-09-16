@@ -1,12 +1,15 @@
 * {
+	margin: 0;
+	padding: 0;
 	box-sizing: border-box;
+	border: 1px solid red;
 }
 
 .mainContainer {
 	width: 450px;
 	height: 450px;
 	margin: 50px auto;
-	padding: 10px;
+	/* padding: 10px; */
 	border: 5px solid lightblue;
 	position: relative;
 	/* BACKGROUND STYLE */
@@ -45,7 +48,7 @@
 	height: 50px;
 	background-color: peachpuff;
 	transition: all 1s linear;
-	transform: skew(-15deg, -15deg);
+	/* transform: skew(-15deg, -15deg); */
 	position: absolute;
 	z-index: 2;
 	top: 0;
@@ -56,7 +59,7 @@
 	height: 50px;
 	background-color: peachpuff;
 	transition: all 1s linear;
-	transform: skew(-15deg, -15deg);
+	/* transform: skew(-15deg, -15deg); */
 	filter: drop-shadow(2px 2px 4px rgb(172, 172, 172));
 	position: absolute;
 	z-index: 1;
@@ -69,6 +72,7 @@
 	overflow: hidden;
 	border-radius: 7px;
 	touch-action: none;
+	position: absolute;
 }
 
 #dragCircle {
@@ -79,7 +83,10 @@
 	border-radius: 50%;
 	touch-action: none;
 	user-select: none;
-	display: absolute;
+	position: absolute;
+	/* top: 0px;
+	left: 0px; */
+	transform: translate3d(Calc(388px / 2), Calc(388px / 2), 0);
 }
 #dragCircle:active {
 	background-color: rgba(168, 218, 220, 1);
