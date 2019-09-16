@@ -1,25 +1,24 @@
 {
-  "name": "flippingsquares",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Gorpalicious/FlippingSquares.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Gorpalicious/FlippingSquares/issues"
-  },
-  "homepage": "https://github.com/Gorpalicious/FlippingSquares#readme",
-  "devDependencies": {
-    "eslint": "^6.4.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2"
-  },
-  "dependencies": {},
-  "description": ""
+	"name": "flippingsquares",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Gorpalicious/FlippingSquares.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Gorpalicious/FlippingSquares/issues"
+	},
+	"homepage": "https://github.com/Gorpalicious/FlippingSquares#readme",
+	"devDependencies": {
+		"eslint": "^6.4.0",
+		"eslint-config-airbnb-base": "^14.0.0",
+		"eslint-plugin-import": "^2.18.2"
+	}
 }
