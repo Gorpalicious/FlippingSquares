@@ -8,24 +8,26 @@ let currentX;
 let currentY;
 let initialX;
 let initialY;
-// var itemWidth;
-// var itemHeight;
-const upperPosBound = 388;
+const itemSize = dragItem.offsetHeight;
+const upperPosBound = container.offsetHeight - itemSize;
 const lowerPosBound = 0;
 let xOffset = upperPosBound / 2;
 let yOffset = upperPosBound / 2;
+const numberOfSquares = Math.floor(container.offsetHeight / itemSize);
+let squaresPositionX = 0;
+let squaresPositionY = 0;
 
-// note: can refactor this later!!!
 function getClosestNumber(numToCompare, lowNumber, highNumber) {
 	const a = highNumber - numToCompare;
 	const b = numToCompare - lowNumber;
-	// console.log(Math.max(highNumber, lowNumber));
+
 	if (Math.max(a, b) === a) {
 		return lowNumber;
 	}
 	return highNumber;
 }
 
+// apply translate to move circle into new position
 function setTranslate(xPos, yPos, el) {
 	const objectToTranslate = el;
 	objectToTranslate.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
@@ -47,6 +49,17 @@ function dragEnd() {
 	active = false;
 }
 
+function checkIfBoundsAreCrossed(upperBoundary, lowerBoundary, objectPosition) {
+	return objectPosition < lowerBoundary || objectPosition > upperBoundary;
+}
+
+function setNewPositions() {
+	xOffset = currentX;
+	yOffset = currentY;
+
+	setTranslate(currentX, currentY, dragItem);
+}
+
 // note: can refactor this later!!!
 function drag(e) {
 	if (active) {
@@ -55,29 +68,18 @@ function drag(e) {
 		currentX = e.clientX - initialX;
 		currentY = e.clientY - initialY;
 
-		if (currentX < lowerPosBound || currentX > upperPosBound) {
+		if (checkIfBoundsAreCrossed(upperPosBound, lowerPosBound, currentX)) {
 			currentX = getClosestNumber(currentX, lowerPosBound, upperPosBound);
-
-			xOffset = currentX;
-			yOffset = currentY;
-
-			setTranslate(currentX, currentY, dragItem);
-
+			setNewPositions();
 			dragEnd(e);
-		} else if (currentY < lowerPosBound || currentY > upperPosBound) {
+		} else if (
+			checkIfBoundsAreCrossed(upperPosBound, lowerPosBound, currentY)
+		) {
 			currentY = getClosestNumber(currentY, lowerPosBound, upperPosBound);
-
-			xOffset = currentX;
-			yOffset = currentY;
-
-			setTranslate(currentX, currentY, dragItem);
-
+			setNewPositions();
 			dragEnd(e);
 		} else {
-			xOffset = currentX;
-			yOffset = currentY;
-
-			setTranslate(currentX, currentY, dragItem);
+			setNewPositions();
 		}
 	}
 }
@@ -89,24 +91,25 @@ container.addEventListener('mousemove', drag, false);
 // Adding Squares to page
 
 function addElement(elementType, classType, elementToFollow) {
-	// create a new div element
 	const newElement = document.createElement(elementType);
+	const oldElement = document.querySelector(`.${elementToFollow}`);
+
 	newElement.classList.add(classType);
+	oldElement.appendChild(newElement);
 
-	const oldElementArray = document.querySelectorAll(`.${elementToFollow}`);
-	const oldElementLast = oldElementArray[oldElementArray.length - 1];
-	// var parentDiv = oldElementLast.parentNode;
-
-	// console.log(currentDiv);
-	// console.log(oldElementArray);
-	// console.log(oldElementLast);
-	// console.log(newElement);
-	document.body.append(newElement, oldElementLast.nextSibling);
+	setTranslate(squaresPositionX, squaresPositionY, newElement);
 }
 
-for (let i = 0; i < 1; i += 1) {
-	addElement('div', 'squareContainer', 'squareContainer');
-	// console.log(i);
+for (let i = 1; i <= numberOfSquares; i += 1) {
+	for (let j = 1; j <= numberOfSquares; j += 1) {
+		addElement('div', 'squareContainer', 'mainContainer');
+		addElement('div', 'squareFront', 'squareContainer');
+		addElement('div', 'squareShadow', 'squareContainer');
+
+		squaresPositionX += itemSize;
+	}
+	squaresPositionX = 0;
+	squaresPositionY += itemSize;
 }
 
 // const squares = Array.from(document.querySelectorAll('.squareFront'));
