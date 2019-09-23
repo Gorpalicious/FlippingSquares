@@ -14,6 +14,7 @@ const upperPosBound = container.offsetHeight - itemSize;
 const lowerPosBound = 0;
 let xOffset = upperPosBound / 2;
 let yOffset = upperPosBound / 2;
+// const numberOfSquares = 3;
 const numberOfSquares = Math.floor(container.offsetHeight / itemSize);
 let squaresPositionX = 0;
 let squaresPositionY = 0;
