@@ -2,6 +2,7 @@
 /* eslint-disable indent */
 const dragItem = document.querySelector('#dragCircle');
 const container = document.querySelector('#circleContainer');
+const mainContainer = document.querySelector('.mainContainer');
 
 let active = false;
 let currentX;
@@ -16,6 +17,8 @@ let yOffset = upperPosBound / 2;
 const numberOfSquares = Math.floor(container.offsetHeight / itemSize);
 let squaresPositionX = 0;
 let squaresPositionY = 0;
+const skewMax = 80;
+// let zIndex = 1;
 
 function getClosestNumber(numToCompare, lowNumber, highNumber) {
 	const a = highNumber - numToCompare;
@@ -30,7 +33,12 @@ function getClosestNumber(numToCompare, lowNumber, highNumber) {
 // apply translate to move circle into new position
 function setTranslate(xPos, yPos, el) {
 	const objectToTranslate = el;
-	objectToTranslate.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+
+	if (objectToTranslate.classList.contains('squareFront') || objectToTranslate.classList.contains('squareShadow')) {
+		objectToTranslate.style.transform = `translate3d(${0}px, ${0}px, 0)`;
+	} else {
+		objectToTranslate.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+	}
 }
 
 function dragStart(e) {
@@ -72,9 +80,7 @@ function drag(e) {
 			currentX = getClosestNumber(currentX, lowerPosBound, upperPosBound);
 			setNewPositions();
 			dragEnd(e);
-		} else if (
-			checkIfBoundsAreCrossed(upperPosBound, lowerPosBound, currentY)
-		) {
+		} else if (checkIfBoundsAreCrossed(upperPosBound, lowerPosBound, currentY)) {
 			currentY = getClosestNumber(currentY, lowerPosBound, upperPosBound);
 			setNewPositions();
 			dragEnd(e);
@@ -92,8 +98,10 @@ container.addEventListener('mousemove', drag, false);
 
 function addElement(elementType, classType, elementToFollow) {
 	const newElement = document.createElement(elementType);
-	const oldElement = document.querySelector(`.${elementToFollow}`);
+	const nodes = Array.from(document.querySelectorAll(`.${elementToFollow}`));
+	const oldElement = nodes[nodes.length - 1];
 
+	// console.log(newElement);
 	newElement.classList.add(classType);
 	oldElement.appendChild(newElement);
 
@@ -112,27 +120,78 @@ for (let i = 1; i <= numberOfSquares; i += 1) {
 	squaresPositionY += itemSize;
 }
 
-// const squares = Array.from(document.querySelectorAll('.squareFront'));
+const squaresBoxes = Array.from(document.querySelectorAll('.squareFront'));
+const squareShadows = Array.from(document.querySelectorAll('.squareShadow'));
 
-// // let squaresArray = Array.from(squares);
+function getChildIndex(child) {
+	const parent = child.parentNode;
+	const { children } = parent;
+	let i = children.length - 1;
+	for (; i >= 0; i -= 1) {
+		if (child === children[i]) {
+			break;
+		}
+	}
+	return i;
+}
 
-// squares.forEach((squares) => {
-//   squares.addEventListener('mouseall', FollowMouse);
-// });
+function scaleBetween(scaledMin, scaledMax, num) {
+	const observedMax = 500;
+	const observedMin = -500;
+	return ((scaledMax - scaledMin) * (num - observedMin)) / (observedMax - observedMin) + scaledMin;
+}
 
-// [...squares].forEach((squares) => {
-//   squares.addEventListener('mouseclick', SetShadows);
-// });
+function getSkewUsingDistanceToCircle(objLocation, circleLocation, maximumSkew) {
+	const objLocationFloor = Math.floor(objLocation);
+	const circleLocationFloor = Math.floor(circleLocation);
 
-// function FollowMouse() {
-//   // get current squares origin
-//   // get current mouse position
-//   // set skew
-//   // set shadow
-// }
+	const distanceBetween = Math.floor(circleLocationFloor - objLocationFloor);
+	// const skewToReturn = Math.floor(distanceBetween / 15);
+	const skewToReturn = Math.floor(scaleBetween(-maximumSkew, maximumSkew, distanceBetween));
+	// const skewToReturn = Math.floor(scaleBetween(0, maximumSkew, distanceBetween));
 
-// function SetShadows() {
-//   // get current squares origin
-//   // get current sun position
-//   // set shadow
-// }
+	// NOTE TO SELF - SQUARES ARE AFFECTED IN THE SAME WAY EACH TIME (IE SKEW doesn't CHANGE )
+	// ALSO IT LOOKS LIKE MORE THAN THE FRONT AND THE SHADOW OF THE SQUARES ARE AFFECTED BY THE SKEW
+	// console.log(this);
+	// console.log(`distance between: ${distanceBetween}, skew: ${skewToReturn}`);
+
+	return skewToReturn;
+}
+
+function transformSquaresArray(element) {
+	const squareRect = element.getBoundingClientRect();
+
+	const elementPositionX = squareRect.top;
+	const elementPositionY = squareRect.left;
+
+	const circleRect = dragItem.getBoundingClientRect();
+	const circleLocationX = circleRect.top;
+	const circleLocationY = circleRect.left;
+
+	let valueX = getSkewUsingDistanceToCircle(elementPositionX, circleLocationX, skewMax);
+	let valueY = getSkewUsingDistanceToCircle(elementPositionY, circleLocationY, skewMax);
+
+	const skewReducer = 30;
+
+	if (valueX > skewReducer) {
+		valueX = skewReducer;
+	} else if (valueX < -skewReducer) {
+		valueX = -skewReducer;
+	}
+
+	if (valueY > skewReducer) {
+		valueY = skewReducer;
+	} else if (valueY < -skewReducer) {
+		valueY = -skewReducer;
+	}
+
+	const objectToTranslate = element;
+	objectToTranslate.style.transform = `skew(${valueX}deg, ${valueY}deg)`;
+}
+
+function transformSquaresAll() {
+	squaresBoxes.forEach(transformSquaresArray);
+	squareShadows.forEach(transformSquaresArray);
+}
+
+mainContainer.addEventListener('click', transformSquaresAll);

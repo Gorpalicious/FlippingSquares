@@ -10,10 +10,12 @@
 	height: 460px;
 	margin: 50px auto;
 	/* padding: 10px; */
-	border: 5px solid lightblue;
+	border: 5px solid rgb(145, 93, 48);
 	position: relative;
 	/* BACKGROUND STYLE */
-	background: radial-gradient(black 3px, transparent 4px),
+	/* background-color: rgb(255, 163, 82); */
+	background-image: linear-gradient(to right bottom, peachpuff, #e6bc48);
+	/* background: radial-gradient(black 3px, transparent 4px),
 		radial-gradient(black 3px, transparent 4px),
 		linear-gradient(#fff 4px, transparent 0),
 		linear-gradient(
@@ -36,19 +38,21 @@
 		),
 		#fff;
 	background-size: 109px 109px, 109px 109px, 100% 6px, 109px 109px, 109px 109px;
-	background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
+	background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px; */
 }
 .squareContainer {
 	position: absolute;
 	width: 50px;
 	height: 50px;
+	z-index: 3;
 }
 .squareFront {
 	width: 50px;
 	height: 50px;
-	background-color: peachpuff;
+	/* background-color: peachpuff; */
+	background-image: linear-gradient(to right bottom, peachpuff, #e6bc48);
 	transition: all 1s linear;
-	/* transform: skew(-15deg, -15deg); */
+	transform: skew(-15deg, -15deg);
 	position: absolute;
 	z-index: 2;
 	top: 0;
@@ -58,9 +62,10 @@
 	width: 50px;
 	height: 50px;
 	background-color: peachpuff;
+	background-image: linear-gradient(to right bottom, peachpuff, #e6bc48);
 	transition: all 1s linear;
 	/* transform: skew(-15deg, -15deg); */
-	filter: drop-shadow(2px 2px 4px rgb(172, 172, 172));
+	filter: drop-shadow(10px 5px 5px rgb(61, 61, 61));
 	position: absolute;
 	z-index: 1;
 }
